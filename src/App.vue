@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <input type="text" v-model="username" name="name">
-    <input type="email" v-model="email" name="email">
-    <input type="password" v-model="password" name="email">
+    
     <button @click="post">Submit</button>
-    <button @click="signUp">Sign up</button>
     <button @click="signOut">Sign out</button>
     <br>
     <input type="text" v-model="id">
@@ -20,9 +18,10 @@ import { users } from './firebase'
 import { getDocs } from "firebase/firestore";
 import { addDoc } from "firebase/firestore";
 import { 
+  connectAuthEmulator,
   getAuth,
   createUserWithEmailAndPassword,
-  signOut
+  signOut,
 } from "firebase/auth";
 import { doc,
    deleteDoc, 
@@ -34,7 +33,8 @@ import { doc,
     updateDoc
   } from "firebase/firestore";
 import { database } from "./firebase"
-
+const auth=getAuth()
+connectAuthEmulator(auth,"http://localhost:9099")
 export default {
   data() {
     return {
@@ -78,13 +78,10 @@ export default {
     },
     // creating an account
     signUp(){
-      const auth=getAuth()
       createUserWithEmailAndPassword(auth,this.email,this.password)
       .then(response => { console.log(response)})
     },
     signOut(){
-      const auth=getAuth()
-
       signOut(auth)
       .then(response=> { console.log(response)})
       .catch(error => { console.log(error)})

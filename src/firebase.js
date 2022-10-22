@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
 import {collection} from "firebase/firestore";
-import {getFirestore} from 'firebase/firestore';
+import {getFirestore , connectFirestoreEmulator}  from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBuMhYdNDxrBjr5TsyAy02h9Ee1tvQrQ8M",
@@ -17,6 +17,7 @@ initializeApp(firebaseConfig);
 // initializing firestore
 const database= getFirestore()
 // set up collection
+connectFirestoreEmulator(database, 'localhost', 4001);
 const users=collection(database, "users");
 // collect data from collection
 export {users,database}
