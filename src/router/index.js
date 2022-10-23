@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import signUp from '../views/signUp.vue'
-import todo from '../views/todo.vue'
+import signupView from '../views/signupView.vue'
+import todoView from '../views/todoView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'signUp',
-    component: signUp
+    name: 'signup',
+    component: signupView
   },
   {
     path: '/todo',
     name: 'todo',
-   component:todo
+   component:todoView
   }
 ]
 
