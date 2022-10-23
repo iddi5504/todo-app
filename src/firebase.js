@@ -1,12 +1,11 @@
 import {initializeApp} from 'firebase/app';
 import {
-  getFirestore,
-  connectFirestoreEmulator,
+  getFirestore
 
 } from 'firebase/firestore';
 import { 
-  getAuth,
-  connectAuthEmulator
+  getAuth
+  
 } from 'firebase/auth';
 const firebaseConfig = {
     apiKey: "AIzaSyBuMhYdNDxrBjr5TsyAy02h9Ee1tvQrQ8M",
@@ -21,11 +20,11 @@ initializeApp(firebaseConfig)
 // initialize firestore instance
 const firestore=getFirestore()
 // set up emulator for firestore
-connectFirestoreEmulator(firestore,"localhost",4001)
+// connectFirestoreEmulator(firestore,"localhost",4001)
 // initialize authentication
 const auth=getAuth()
 // set up emulator for authentication
-connectAuthEmulator(auth,"http://localhost:9099")
+// connectAuthEmulator(auth,"http://localhost:9099")
 
 // export instances
 export {

@@ -135,10 +135,6 @@ export default {
   padding-left: 50px;
 }
 
-.todo-input:hover{
- 
-}
-
 button {
   background: hotpink !important;
 }
@@ -169,8 +165,6 @@ button {
 
 .bi-trash {
   font-size: 2rem;
-}
-.bi-card-text {
 }
 .input-icon{
   position: absolute;
