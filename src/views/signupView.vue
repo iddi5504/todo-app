@@ -6,7 +6,7 @@
    </div>
     <div  class="signup-fields">
       <label for="password">Password</label>
-    <input class="signup-input" type="password" v-model="password" name="email">
+      <input @keyup.enter="SignUp" class="signup-input" type="password" v-model="password" name="email">
     </div>
     <button @click="signUp">Sign up</button>
     <div  @click="login">
@@ -36,6 +36,7 @@ export default {
   },
   methods:{
     signUp(){
+     if (this.email && this.password) {
       createUserWithEmailAndPassword(auth,this.email,this.password)
       .then(response=>{
         console.log(response.user)
@@ -44,6 +45,9 @@ export default {
       .catch(error=>{
         console.log(error)
       })
+     } else {
+      alert("Please fill out the form")
+     }
     },
     login(){
       signInWithEmailAndPassword(auth,this.email,this.password)
@@ -62,13 +66,17 @@ export default {
 </script>
 <style scoped>
 .signup-input{
-  border-radius: 10px;
+  border-radius: 6px;
   width: 94%;
   padding: 10px;
-  margin: 13px;
+  margin: 6px 13px;
   box-sizing: border-box;
   font-size: 29px;
   max-width: 45ch;
+  border: none;
+  box-shadow: 3px 2px 5px grey;
+  outline: none;
+  color: #4b4949;
 }
 .signup-fields{
   display: flex;
@@ -99,12 +107,14 @@ button{
   background: rebeccapurple;
   color: white;
   font-weight: bolder;
+  margin: 18px;
+  box-shadow: 1px 2px 7px grey;
 }
 
 label{
   font-size: 1.7rem;
   font-weight: 500;
   color: black;
-  margin: 13px;
+  margin: 0 17px;
 }
 </style>

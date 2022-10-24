@@ -2,10 +2,10 @@
   <div class="todo">
     <div class="w-100">
       <div class="d-flex py-4 flex-column justify-content-around align-items-center">
-        <h3 class="h1">Add a todo</h3>
+        <h3 class="h1" style="color: #ab33ab; font-size: 2rem; font-weight: 700;">Add a todo</h3>
         <div class="d-flex flex-column justify-content-around align-items-center w-100 mw-70">
           <div style="position:relative;">
-          <input type="text" v-on:keyup.enter="addTodo" v-model="todotext" class="todo-input">
+            <input type="text" v-on:keyup.enter="addTodo" v-model="todotext" class="todo-input">
             <i class="bi bi-blockquote-right input-icon"></i>
           </div>
           <div class="w-100">
@@ -22,30 +22,30 @@
         </div>
       </div>
       <div class="todo-containers">
-        <div v-for="todo in todos" :key="todo.id"
-          class="todo-container d-flex flex-row justify-content-between align-items-center w-100 mw-70">
-          <div class="d-flex flex-row justify-content-between align-items-start w-100 p-1">
-            <div style="text-align:left;"
-              class="d-flex flex-column justify-content-around  text-left align-items-start  w-100">
-              <div class="p-1 h3">
-                {{todo.todo}}
-              </div>
-              <div class="d-flex flex-row justify-content-start g-10 align-items-start w-100">
-                <div>
-                  Date
+        <transition-group class="d-flex flex-column justify-content-start align-items-center w-100 gap-2" name="show"
+          mode="out-in">
+          <div v-for="todo in todos" :key="todo.id"
+            class="todo-container d-flex flex-row justify-content-between align-items-center w-100 mw-70">
+            <div class="d-flex flex-row justify-content-between align-items-start w-100 p-1">
+              <div style="text-align:left;"
+                class="d-flex flex-column justify-content-around  text-left align-items-start  w-100">
+                <div class="p-1 h3">
+                  {{ todo.todo }}
                 </div>
-                <div>
-                  {{todo.priority}}
+                <div class="d-flex flex-row justify-content-start g-10 align-items-start w-100">
+                  <div>
+                    {{ currentDate }}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <i @click="deleteTodo(todo.id)" class="bi bi-trash"></i>
-            </div>
-            <div>
+              <div>
+                <i @click="deleteTodo(todo.id)" class="bi bi-trash"></i>
+              </div>
+              <div>
+              </div>
             </div>
           </div>
-        </div>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -61,7 +61,8 @@ import {
   doc,
   deleteDoc,
   query,
-  orderBy
+  orderBy,
+  Timestamp
 } from 'firebase/firestore'
 const todos = collection(firestore, "todos")
 export default {
@@ -74,15 +75,20 @@ export default {
   },
   methods: {
     addTodo() {
-      addDoc(todos, {
-        todo: this.todotext,
-        priority: 3,
-        time: serverTimestamp(),
+      if (this.todotext) {
+        addDoc(todos, {
+          todo: this.todotext,
+          priority: 3,
+          time: serverTimestamp(),
+          currentDate: ""
 
-      })
-        .then(() => {
-          this.todotext = ""
         })
+          .then(() => {
+            this.todotext = ""
+          })
+      } else {
+        alert("Please type a todo to add")
+      }
     },
     deleteTodo(id) {
       const thisTodo = doc(todos, id)
@@ -90,7 +96,10 @@ export default {
     }
   },
   created() {
-
+    const time = new Date()
+    const months = ["January", "Febuary", "March",
+      "April", "May", "June", "July", "August", "september", "October", "November", "December"]
+    this.currentDate = `${time.getDate()} ${months[time.getMonth()]}`
   },
   watch: {
     sortby: {
@@ -100,10 +109,8 @@ export default {
           const todos = []
           snapshot.forEach(snapshot => {
             todos.push({ ...snapshot.data(), id: snapshot.id })
-            console.log(snapshot)
           });
           this.todos = todos
-          console.warn(todos)
         })
       },
       immediate: true
@@ -118,16 +125,34 @@ export default {
   width: 100%;
 }
 
+.show-enter-active,
+.show-move {
+  transition: all 0.5s ease-out;
+  opacity: 1;
+
+}
+
+.show-leave-active {
+  transition: all 0.5s ease-out;
+  opacity: 1;
+  position: absolute;
+}
+
+.show-enter,
+.show-leave-to {
+  opacity: 0;
+}
+
 .todo-input {
   max-width: 377px;
   border-radius: 10px;
-  background: aliceblue;
+  background: #f1e2f3;
   border: none;
   box-shadow: 1px 2px 4px grey;
   padding: 10px;
   margin: 10px;
   width: 100%;
-  color: hotpink;
+  color: #70696d;
   font-size: 1.4rem;
   font-weight: 700;
   line-height: 30px;
@@ -136,13 +161,15 @@ export default {
 }
 
 button {
-  background: hotpink !important;
+  background: #C689C6 !important;
+  border: none !important;
+  color: white !important;
 }
 
 .todo-container {
   max-width: 530px;
   border-radius: 10px;
-  background: pink;
+  background: #ffd8f1;
   padding: 10px;
   box-shadow: 1px 2px 7px 0px grey;
 }
@@ -165,12 +192,14 @@ button {
 
 .bi-trash {
   font-size: 2rem;
+  color: #6a2c6a !important;
 }
-.input-icon{
+
+.input-icon {
   position: absolute;
   top: 7px;
   left: 20px;
   font-size: 2rem;
-  
+
 }
 </style>
