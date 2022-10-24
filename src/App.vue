@@ -27,6 +27,7 @@ export default {
   height: 100vh;
   width: 100%;
   max-width: 700px;
+  background: #f4edf5;
 }
 
 

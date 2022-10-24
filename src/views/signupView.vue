@@ -68,12 +68,13 @@ export default {
   margin: 13px;
   box-sizing: border-box;
   font-size: 29px;
+  max-width: 45ch;
 }
 .signup-fields{
   display: flex;
   align-items: self-start;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
   flex-direction: column;
   width: inherit;
 }
